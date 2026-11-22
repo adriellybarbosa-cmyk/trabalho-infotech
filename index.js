@@ -1,5 +1,5 @@
 window.addEventListener ('load', function ()
- {alert ("Página carregada com sucesso!"); });
+ {console.log("Página carregada com sucesso!"); });
 
 window.addEventListener ('beforeunload', function (event)
  {event.preventDefeault();
