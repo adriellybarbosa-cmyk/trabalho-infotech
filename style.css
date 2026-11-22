@@ -270,11 +270,13 @@ main {
 }
 
 .integrantes {
-    display: grid;
-    grid-template-columns: repeat(3, 200px);
-    gap: 24px;
-    justify-content: center;
-    align-items: center;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px 20px;
+    justify-items: center;
+    align-items: start;
+    max-width: 750px;
+    margin: 0 auto;
 }
 
 .integrantes .membro {
@@ -282,11 +284,12 @@ main {
     flex-direction: column;
     align-items: center;
     gap: 12px;
+    width: 100%;
 }
 
 .integrantes .membro img {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
     border-radius: 18px;
 }
