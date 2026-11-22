@@ -393,8 +393,62 @@ hr {
 /* RESPONSIVIDADE */
 
 /* Celulares */
-   @media (max-width: 600px) {
 
+
+/* RESPONSIVIDADE */
+
+/* CELULARES */
+@media (max-width: 600px) {
+
+    /* HEADER */
+    header {
+        position: sticky;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 8px;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .logo img {
+        width: 42px;
+        height: 42px;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    header nav {
+        width: 100%;
+    }
+
+    header nav ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+        padding: 0;
+        margin: 0;
+    }
+
+    header nav a {
+        display: block;
+        font-size: 10px;
+        padding: 7px 9px;
+        border-radius: 8px;
+        white-space: nowrap;
+    }
+
+    /* CARROSSEL */
     #carousel {
         width: 100% !important;
         max-width: 100% !important;
@@ -420,46 +474,46 @@ hr {
         width: 35px !important;
     }
 
-   .cards-impactos {
+    /* CARDS */
+    .cards-impactos {
         grid-template-columns: 1fr;
         gap: 12px;
     }
 
-    header {
-        padding: 15px;
+    .card-inicio,
+    .card {
+        padding: 18px;
     }
 
-    .logo {
-        justify-content: center;
-    }
-
-    nav ul {
-        gap: 12px;
-        padding: 0;
-    }
-
-    nav a {
-        font-size: 14px;
-    }
-
+    /* CONTEÚDO */
     main {
         width: 92%;
+        margin: 2% auto;
     }
 
     h2 {
-        font-size: 24px;
+        font-size: 24px !important;
     }
 
     p {
         font-size: 15px;
     }
 
-    .destaques .card {
-        padding: 18px;
-    }
-
+    /* FOOTER */
     footer {
         text-align: center;
         padding: 15px;
+    }
+
+    .foot {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .foot a {
+        font-size: 11px;
+        padding: 6px;
     }
 }
