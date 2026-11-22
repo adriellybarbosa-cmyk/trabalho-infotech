@@ -270,8 +270,8 @@ main {
 }
 
 .integrantes {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
     gap: 24px;
     justify-content: center;
     align-items: center;
@@ -546,5 +546,9 @@ hr {
         font-size: 10px !important;
         padding: 7px 9px !important;
         white-space: nowrap !important;
+    }
+
+    integrantes {
+        grid-template-columns: 1fr;
     }
 }
