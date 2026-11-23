@@ -112,70 +112,118 @@ document.addEventListener("DOMContentLoaded", () => {
 ];
 
   let perguntaAtual = 0;
-  let pontos = 0;
+let pontos = 0;
 
-  function iniciarAtividade() {
-    const principal = document.querySelector("main");
+function iniciarQuiz() {
+  const principal = document.querySelector("main");
+  if (!principal) return;
 
-    if (!principal) return;
+  const quiz = document.createElement("section");
+  quiz.id = "quiz-sustentabilidade";
 
-    const atividade = document.createElement("section");
-    atividade.id = "atividade-geografia";
+  const titulo = document.createElement("h2");
+  titulo.textContent = "Teste seus conhecimentos!";
 
-    const titulo = document.createElement("h2");
-    titulo.textContent = "Atividade de Geografia";
+  const descricao = document.createElement("p");
+  descricao.textContent =
+    "Descubra o que você aprendeu sobre data centers, consumo de água e sustentabilidade.";
 
-    atividade.appendChild(titulo);
-    principal.appendChild(atividade);
+  quiz.append(titulo, descricao);
+  principal.appendChild(quiz);
 
-    mostrarPergunta(atividade);
+  mostrarPergunta(quiz);
+}
+
+function mostrarPergunta(quiz) {
+  quiz.querySelector(".quiz-pergunta")?.remove();
+
+  if (perguntaAtual >= perguntas.length) {
+    mostrarResultado(quiz);
+    return;
   }
 
-  function mostrarPergunta(atividade) {
-    atividade.querySelector(".pergunta-container")?.remove();
+  const atual = perguntas[perguntaAtual];
 
-    if (perguntaAtual >= perguntas.length) {
+  const area = document.createElement("div");
+  area.className = "quiz-pergunta";
+
+  const progresso = document.createElement("p");
+  progresso.textContent =
+    `Pergunta ${perguntaAtual + 1} de ${perguntas.length}`;
+
+  const titulo = document.createElement("h3");
+  titulo.textContent = atual.pergunta;
+
+  area.append(progresso, titulo);
+
+  atual.opcoes.forEach((opcao, indice) => {
+    const botao = document.createElement("button");
+    botao.type = "button";
+    botao.textContent = opcao;
+
+    botao.addEventListener("click", () => {
+      const botoes = area.querySelectorAll("button");
+      botoes.forEach(b => b.disabled = true);
+
       const resultado = document.createElement("p");
-      resultado.textContent =
-        `Você acertou ${pontos} de ${perguntas.length} perguntas!`;
 
-      atividade.appendChild(resultado);
-      return;
-    }
+      if (indice === atual.resposta) {
+        pontos++;
+        resultado.textContent = "Resposta correta!";
+      } else {
+        resultado.textContent =
+          `Resposta incorreta. A resposta certa é: ${atual.opcoes[atual.resposta]}.`;
+      }
 
-    const dados = perguntas[perguntaAtual];
+      area.appendChild(resultado);
 
-    const container = document.createElement("div");
-    container.className = "pergunta-container";
+      const proximo = document.createElement("button");
+      proximo.type = "button";
+      proximo.textContent =
+        perguntaAtual === perguntas.length - 1
+          ? "Ver resultado"
+          : "Próxima pergunta";
 
-    const pergunta = document.createElement("h3");
-    pergunta.textContent = dados.pergunta;
-    container.appendChild(pergunta);
-
-    dados.opcoes.forEach(opcao => {
-      const botao = document.createElement("button");
-
-      botao.type = "button";
-      botao.textContent = opcao;
-
-      botao.addEventListener("click", () => {
-        if (opcao === dados.resposta) {
-          pontos++;
-          alert("Resposta correta!");
-        } else {
-          alert(`Resposta incorreta! A resposta era ${dados.resposta}.`);
-        }
-
+      proximo.addEventListener("click", () => {
         perguntaAtual++;
-        mostrarPergunta(atividade);
+        mostrarPergunta(quiz);
       });
 
-      container.appendChild(botao);
+      area.appendChild(proximo);
     });
 
-    atividade.appendChild(container);
-  }
+    area.appendChild(botao);
+  });
 
-  iniciarAtividade();
+  quiz.appendChild(area);
+}
 
-});
+function mostrarResultado(quiz) {
+  const resultado = document.createElement("div");
+  resultado.className = "quiz-pergunta";
+
+  const titulo = document.createElement("h3");
+  titulo.textContent = "Quiz finalizado!";
+
+  const pontuacao = document.createElement("p");
+  pontuacao.textContent =
+    `Você acertou ${pontos} de ${perguntas.length} perguntas.`;
+
+  const reiniciar = document.createElement("button");
+  reiniciar.type = "button";
+  reiniciar.textContent = "Refazer atividade";
+
+  reiniciar.addEventListener("click", () => {
+    perguntaAtual = 0;
+    pontos = 0;
+    resultado.remove();
+    mostrarPergunta(quiz);
+  });
+
+  resultado.append(titulo, pontuacao, reiniciar);
+  quiz.appendChild(resultado);
+}
+
+iniciarAtividade();
+
+  });
