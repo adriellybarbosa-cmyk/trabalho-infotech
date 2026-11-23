@@ -224,6 +224,7 @@ resultado.append(titulo, pontuacao, reiniciar);
 quiz.appendChild(resultado);
 }
 
-iniciarQuiz();
-
+if (document.querySelector("#quiz-sustentabilidade-container")) {
+  iniciarQuiz();
+}
 });
