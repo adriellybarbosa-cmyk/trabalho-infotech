@@ -1,444 +1,151 @@
 
-let conteudoConheca = [];
-let conteudoImpactos = [];
-let conteudoConclusao = [];
-let cardsImpactos = [];
+document.addEventListener("DOMContentLoaded", () => {
 
+  // 1. ARRAY DE OBJETOS: pega os cards que já existem no HTML
+  const impactos = Array.from(
+    document.querySelectorAll(".cards-impactos .card")
+  ).map((card, index) => ({
+    id: index + 1,
+    titulo: card.querySelector("h2, h3, h4")?.textContent.trim() || "",
+    texto: card.textContent.trim(),
+    elemento: card
+  }));
 
-/* Captura os textos originais de cada página */
+  // 2. FUNÇÃO PARA CRIAR UM CARD
+  // Mantém o conteúdo e as classes do card original.
+  function criarCard(item) {
+    return item.elemento.cloneNode(true);
+  }
 
-function carregarConteudos() {
+  // 3. PESQUISA E FILTRO DOS CARDS EXISTENTES
+  function pesquisarImpactos(palavra) {
+    impactos.forEach(item => {
+      const encontrou = item.texto
+        .toLowerCase()
+        .includes(palavra.toLowerCase());
 
-    let pagina = window.location.pathname.toLowerCase();
+      item.elemento.hidden = !encontrou;
+    });
+  }
 
-    if (pagina.includes("conheca")) {
+  const areaCards = document.querySelector(".cards-impactos");
 
-        let elementos = document.querySelectorAll(
-            "#conteudo-dinamico h2, #conteudo-dinamico h3, #conteudo-dinamico p, #conteudo-dinamico li"
-        );
+  if (areaCards && impactos.length > 0) {
+    const pesquisa = document.createElement("input");
 
-        elementos.forEach(function(elemento) {
+    pesquisa.type = "search";
+    pesquisa.placeholder = "Pesquisar impactos...";
+    pesquisa.setAttribute("aria-label", "Pesquisar impactos");
 
-            conteudoConheca.push({
-                tipo: elemento.tagName,
-                texto: elemento.innerText
-            });
-
-        });
-
-    }
-
-
-    if (pagina.includes("impactos")) {
-
-        let elementos = document.querySelectorAll(
-            "main h2, main h3, main p, main li"
-        );
-
-        elementos.forEach(function(elemento) {
-
-            conteudoImpactos.push({
-                tipo: elemento.tagName,
-                texto: elemento.innerText
-            });
-
-        });
-
-
-        // Armazena os quatro cartões originais.
-
-        let cartoes = document.querySelectorAll(
-            ".cards-impactos .card"
-        );
-
-        cartoes.forEach(function(cartao) {
-
-            cardsImpactos.push({
-
-                titulo: cartao.querySelector("h3").innerText,
-
-                texto: cartao.innerText,
-
-                html: cartao.innerHTML
-
-            });
-
-        });
-
-    }
-
-
-    if (pagina.includes("conclus")) {
-
-        let elementos = document.querySelectorAll(
-            "#conteudo-dinamico h2, #conteudo-dinamico h3, #conteudo-dinamico p, #conteudo-dinamico li"
-        );
-
-        elementos.forEach(function(elemento) {
-
-            conteudoConclusao.push({
-                tipo: elemento.tagName,
-                texto: elemento.innerText
-            });
-
-        });
-
-    }
-
-}
-
-
-/* FUNÇÃO PARA GERAR CARTÕES
-   Mantém as classes e o HTML originais.*/
-
-function gerarCartoes(lista) {
-
-    let area = document.querySelector(".cards-impactos");
-
-    if (!area) {
-        return;
-    }
-
-    area.innerHTML = "";
-
-    lista.forEach(function(cartao) {
-
-        let novoCartao = document.createElement("article");
-
-        novoCartao.className = "card";
-
-        novoCartao.innerHTML = cartao.html;
-
-        area.appendChild(novoCartao);
-
+    pesquisa.addEventListener("input", () => {
+      pesquisarImpactos(pesquisa.value);
     });
 
-}
+    areaCards.parentNode.insertBefore(pesquisa, areaCards);
+  }
 
+  // 4. MENU RESPONSIVO
+  const botaoMenu = document.querySelector(
+    ".menu-toggle, .hamburger, #menu-toggle"
+  );
 
-/* BUSCA E FILTRO COM FILTER E FIND */
+  const menu = document.querySelector(
+    "nav ul, .menu"
+  );
 
-function iniciarBusca() {
+  if (botaoMenu && menu) {
+    botaoMenu.addEventListener("click", () => {
+      menu.classList.toggle("ativo");
 
-    let area = document.querySelector(".cards-impactos");
-
-    if (!area) {
-        return;
-    }
-
-    // Cria o campo de busca sem substituir os cartões.
-
-    let busca = document.createElement("input");
-
-    busca.type = "text";
-
-    busca.id = "buscaImpactos";
-
-    busca.placeholder = "Pesquisar impactos...";
-
-    busca.style.padding = "10px";
-
-    busca.style.width = "100%";
-
-    busca.style.maxWidth = "400px";
-
-    busca.style.margin = "15px 0";
-
-
-    area.parentNode.insertBefore(busca, area);
-
-
-    busca.addEventListener("input", function() {
-
-        let pesquisa = busca.value.toLowerCase();
-
-        let resultado = cardsImpactos.filter(function(cartao) {
-
-            return cartao.texto.toLowerCase().includes(pesquisa);
-
-        });
-
-        gerarCartoes(resultado);
-
+      const aberto = menu.classList.contains("ativo");
+      botaoMenu.setAttribute("aria-expanded", aberto);
     });
+  }
 
+  // 5. ATIVIDADE INTERATIVA DE GEOGRAFIA
+  const perguntas = [
+    {
+      pergunta: "Qual é o maior bioma brasileiro?",
+      opcoes: ["Caatinga", "Amazônia", "Pampa"],
+      resposta: "Amazônia"
+    },
+    {
+      pergunta: "Qual é a capital do Brasil?",
+      opcoes: ["São Paulo", "Brasília", "Rio de Janeiro"],
+      resposta: "Brasília"
+    },
+    {
+      pergunta: "Em qual região fica o estado de São Paulo?",
+      opcoes: ["Sul", "Nordeste", "Sudeste"],
+      resposta: "Sudeste"
+    }
+  ];
 
-    // Exemplo de utilização do find().
+  let perguntaAtual = 0;
+  let pontos = 0;
 
-    let impactoAmbiental = cardsImpactos.find(function(cartao) {
+  function iniciarAtividade() {
+    const principal = document.querySelector("main");
 
-        return cartao.titulo.toLowerCase().includes("ambientais");
+    if (!principal) return;
 
-    });
+    const atividade = document.createElement("section");
+    atividade.id = "atividade-geografia";
 
-    console.log("Impacto encontrado:", impactoAmbiental);
+    const titulo = document.createElement("h2");
+    titulo.textContent = "Atividade de Geografia";
 
-}
+    atividade.appendChild(titulo);
+    principal.appendChild(atividade);
 
+    mostrarPergunta(atividade);
+  }
 
-/* 4. MENU RESPONSIVO*/
+  function mostrarPergunta(atividade) {
+    atividade.querySelector(".pergunta-container")?.remove();
 
+    if (perguntaAtual >= perguntas.length) {
+      const resultado = document.createElement("p");
+      resultado.textContent =
+        `Você acertou ${pontos} de ${perguntas.length} perguntas!`;
 
-function menuResponsivo() {
-
-    let menu = document.querySelector("header nav");
-
-    if (!menu) {
-        return;
+      atividade.appendChild(resultado);
+      return;
     }
 
-    menu.setAttribute("aria-label", "Menu principal");
+    const dados = perguntas[perguntaAtual];
 
-    let links = menu.querySelectorAll("a");
+    const container = document.createElement("div");
+    container.className = "pergunta-container";
 
-    links.forEach(function(link) {
+    const pergunta = document.createElement("h3");
+    pergunta.textContent = dados.pergunta;
+    container.appendChild(pergunta);
 
-        link.addEventListener("click", function() {
+    dados.opcoes.forEach(opcao => {
+      const botao = document.createElement("button");
 
-            console.log("Página selecionada:", link.innerText);
+      botao.type = "button";
+      botao.textContent = opcao;
 
-        });
-
-    });
-
-}
-
-
-
-/* QUIZ DE GEOGRAFIA */
-
-function iniciarQuiz() {
-
-    let pagina = window.location.pathname.toLowerCase();
-
-    if (!pagina.includes("impactos")) {
-        return;
-    }
-
-    let perguntas = [
-
-        {
-            pergunta: "Qual é uma consequência ambiental do consumo excessivo de água?",
-
-            alternativas: [
-                "Esgotamento de aquíferos.",
-                "Aumento das chuvas.",
-                "Diminuição da temperatura."
-            ],
-
-            correta: 0
-
-        },
-
-        {
-            pergunta: "Qual atividade econômica pode ser prejudicada pela falta de água?",
-
-            alternativas: [
-                "Agricultura e pecuária.",
-                "Somente o turismo.",
-                "Somente o comércio digital."
-            ],
-
-            correta: 0
-
-        },
-
-        {
-            pergunta: "Qual alternativa ajuda a reduzir o consumo de água nos data centers?",
-
-            alternativas: [
-                "Aumentar a evaporação.",
-                "Utilizar circuitos fechados e água de reúso.",
-                "Aumentar a captação de água potável."
-            ],
-
-            correta: 1
-
-        }
-
-    ];
-
-
-    let area = document.createElement("section");
-
-    area.id = "quizGeografia";
-
-    area.style.marginTop = "35px";
-
-
-    document.querySelector("main").appendChild(area);
-
-
-    let perguntaAtual = 0;
-
-    let pontos = 0;
-
-
-    function mostrarPergunta() {
-
-        let pergunta = perguntas[perguntaAtual];
-
-        let conteudo = `
-
-            <h2>Teste seus conhecimentos!</h2>
-
-            <br>
-
-            <h3>${pergunta.pergunta}</h3>
-
-            <br>
-
-        `;
-
-
-        pergunta.alternativas.forEach(function(alternativa, indice) {
-
-            conteudo += `
-
-                <p>
-                    <label>
-                        <input type="radio"
-                        name="resposta"
-                        value="${indice}">
-
-                        ${alternativa}
-                    </label>
-                </p>
-
-            `;
-
-        });
-
-
-        conteudo += `
-
-            <button id="responderQuiz" type="button">
-                Responder
-            </button>
-
-            <p id="resultadoQuiz"></p>
-
-        `;
-
-
-        area.innerHTML = conteudo;
-
-
-        document.getElementById("responderQuiz")
-            .addEventListener("click", verificarResposta);
-
-    }
-
-
-    function verificarResposta() {
-
-        let selecionada = document.querySelector(
-            'input[name="resposta"]:checked'
-        );
-
-        let resultado = document.getElementById("resultadoQuiz");
-
-
-        if (!selecionada) {
-
-            resultado.innerText = "Selecione uma alternativa.";
-
-            return;
-
-        }
-
-
-        let resposta = Number(selecionada.value);
-
-
-        if (resposta === perguntas[perguntaAtual].correta) {
-
-            pontos++;
-
-            resultado.innerText = "Resposta correta! Parabéns!";
-
+      botao.addEventListener("click", () => {
+        if (opcao === dados.resposta) {
+          pontos++;
+          alert("Resposta correta!");
         } else {
-
-            resultado.innerText = "Resposta incorreta. Continue estudando!";
-
+          alert(`Resposta incorreta! A resposta era ${dados.resposta}.`);
         }
-
-
-        let botao = document.getElementById("responderQuiz");
-
-        botao.innerText = "Próxima questão";
-
-        botao.onclick = proximaPergunta;
-
-    }
-
-
-    function proximaPergunta() {
 
         perguntaAtual++;
+        mostrarPergunta(atividade);
+      });
 
-        if (perguntaAtual < perguntas.length) {
+      container.appendChild(botao);
+    });
 
-            mostrarPergunta();
+    atividade.appendChild(container);
+  }
 
-        } else {
-
-            mostrarResultado();
-
-        }
-
-    }
-
-
-    function mostrarResultado() {
-
-        area.innerHTML = `
-
-            <h2>Resultado do quiz</h2>
-
-            <p>
-                Você acertou ${pontos} de ${perguntas.length} questões!
-            </p>
-
-            <button id="refazerQuiz" type="button">
-                Refazer atividade
-            </button>
-
-        `;
-
-
-        document.getElementById("refazerQuiz")
-            .addEventListener("click", function() {
-
-                perguntaAtual = 0;
-
-                pontos = 0;
-
-                mostrarPergunta();
-
-            });
-
-    }
-
-
-    mostrarPergunta();
-
-}
-
-
-/* INICIALIZAÇÃO */
-
-document.addEventListener("DOMContentLoaded", function() {
-
-    carregarConteudos();
-
-    menuResponsivo();
-
-    iniciarTemaEscuro();
-
-    iniciarBusca();
-
-    iniciarQuiz();
+  iniciarAtividade();
 
 });
-
