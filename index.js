@@ -62,10 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  
-// ATIVIDADE INTERATIVA: DATA CENTERS E SUSTENTABILIDADE
-
-const perguntas = [
+  // 5. ATIVIDADE INTERATIVA DE GEOGRAFIA
+  const perguntas = [
   {
     pergunta: "Por que os data centers consomem tanta água?",
     opcoes: [
@@ -113,118 +111,71 @@ const perguntas = [
   }
 ];
 
-let perguntaAtual = 0;
-let pontos = 0;
+  let perguntaAtual = 0;
+  let pontos = 0;
 
-function iniciarQuiz() {
-  const principal = document.querySelector("main");
-  if (!principal) return;
+  function iniciarAtividade() {
+    const principal = document.querySelector("main");
 
-  const quiz = document.createElement("section");
-  quiz.id = "quiz-sustentabilidade";
+    if (!principal) return;
 
-  const titulo = document.createElement("h2");
-  titulo.textContent = "Teste seus conhecimentos!";
+    const atividade = document.createElement("section");
+    atividade.id = "atividade-geografia";
 
-  const descricao = document.createElement("p");
-  descricao.textContent =
-    "Descubra o que você aprendeu sobre data centers, consumo de água e sustentabilidade.";
+    const titulo = document.createElement("h2");
+    titulo.textContent = "Atividade de Geografia";
 
-  quiz.append(titulo, descricao);
-  principal.appendChild(quiz);
+    atividade.appendChild(titulo);
+    principal.appendChild(atividade);
 
-  mostrarPergunta(quiz);
-}
-
-function mostrarPergunta(quiz) {
-  quiz.querySelector(".quiz-pergunta")?.remove();
-
-  if (perguntaAtual >= perguntas.length) {
-    mostrarResultado(quiz);
-    return;
+    mostrarPergunta(atividade);
   }
 
-  const atual = perguntas[perguntaAtual];
+  function mostrarPergunta(atividade) {
+    atividade.querySelector(".pergunta-container")?.remove();
 
-  const area = document.createElement("div");
-  area.className = "quiz-pergunta";
-
-  const progresso = document.createElement("p");
-  progresso.textContent =
-    `Pergunta ${perguntaAtual + 1} de ${perguntas.length}`;
-
-  const titulo = document.createElement("h3");
-  titulo.textContent = atual.pergunta;
-
-  area.append(progresso, titulo);
-
-  atual.opcoes.forEach((opcao, indice) => {
-    const botao = document.createElement("button");
-    botao.type = "button";
-    botao.textContent = opcao;
-
-    botao.addEventListener("click", () => {
-      const botoes = area.querySelectorAll("button");
-      botoes.forEach(b => b.disabled = true);
-
+    if (perguntaAtual >= perguntas.length) {
       const resultado = document.createElement("p");
+      resultado.textContent =
+        `Você acertou ${pontos} de ${perguntas.length} perguntas!`;
 
-      if (indice === atual.resposta) {
-        pontos++;
-        resultado.textContent = "Resposta correta!";
-      } else {
-        resultado.textContent =
-          `Resposta incorreta. A resposta certa é: ${atual.opcoes[atual.resposta]}.`;
-      }
+      atividade.appendChild(resultado);
+      return;
+    }
 
-      area.appendChild(resultado);
+    const dados = perguntas[perguntaAtual];
 
-      const proximo = document.createElement("button");
-      proximo.type = "button";
-      proximo.textContent =
-        perguntaAtual === perguntas.length - 1
-          ? "Ver resultado"
-          : "Próxima pergunta";
+    const container = document.createElement("div");
+    container.className = "pergunta-container";
 
-      proximo.addEventListener("click", () => {
+    const pergunta = document.createElement("h3");
+    pergunta.textContent = dados.pergunta;
+    container.appendChild(pergunta);
+
+    dados.opcoes.forEach(opcao => {
+      const botao = document.createElement("button");
+
+      botao.type = "button";
+      botao.textContent = opcao;
+
+      botao.addEventListener("click", () => {
+        if (opcao === dados.resposta) {
+          pontos++;
+          alert("Resposta correta!");
+        } else {
+          alert(`Resposta incorreta! A resposta era ${dados.resposta}.`);
+        }
+
         perguntaAtual++;
-        mostrarPergunta(quiz);
+        mostrarPergunta(atividade);
       });
 
-      area.appendChild(proximo);
+      container.appendChild(botao);
     });
 
-    area.appendChild(botao);
-  });
+    atividade.appendChild(container);
+  }
 
-  quiz.appendChild(area);
-}
+  iniciarAtividade();
 
-function mostrarResultado(quiz) {
-  const resultado = document.createElement("div");
-  resultado.className = "quiz-pergunta";
-
-  const titulo = document.createElement("h3");
-  titulo.textContent = "Quiz finalizado!";
-
-  const pontuacao = document.createElement("p");
-  pontuacao.textContent =
-    `Você acertou ${pontos} de ${perguntas.length} perguntas.`;
-
-  const reiniciar = document.createElement("button");
-  reiniciar.type = "button";
-  reiniciar.textContent = "Refazer atividade";
-
-  reiniciar.addEventListener("click", () => {
-    perguntaAtual = 0;
-    pontos = 0;
-    resultado.remove();
-    mostrarPergunta(quiz);
-  });
-
-  resultado.append(titulo, pontuacao, reiniciar);
-  quiz.appendChild(resultado);
-}
-
-iniciarQuiz();
-
+});
