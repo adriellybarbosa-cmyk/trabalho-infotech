@@ -1,15 +1,4 @@
 
-/* ==========================================
-   INFOTECH - JAVASCRIPT
-   Mantém o HTML e o visual original do site.
-========================================== */
-
-
-/* ==========================================
-   1. ARRAYS DE OBJETOS
-   Aproveita o conteúdo que já está no HTML.
-========================================== */
-
 let conteudoConheca = [];
 let conteudoImpactos = [];
 let conteudoConclusao = [];
@@ -99,10 +88,8 @@ function carregarConteudos() {
 }
 
 
-/* ==========================================
-   2. FUNÇÃO PARA GERAR CARTÕES
-   Mantém as classes e o HTML originais.
-========================================== */
+/* FUNÇÃO PARA GERAR CARTÕES
+   Mantém as classes e o HTML originais.*/
 
 function gerarCartoes(lista) {
 
@@ -129,9 +116,7 @@ function gerarCartoes(lista) {
 }
 
 
-/* ==========================================
-   3. BUSCA E FILTRO COM FILTER E FIND
-========================================== */
+/* BUSCA E FILTRO COM FILTER E FIND */
 
 function iniciarBusca() {
 
@@ -191,12 +176,8 @@ function iniciarBusca() {
 }
 
 
-/* ==========================================
-   4. MENU RESPONSIVO
-========================================== */
+/* 4. MENU RESPONSIVO*/
 
-// O menu original já possui responsividade no CSS.
-// Aqui mantemos a navegação existente e seus links.
 
 function menuResponsivo() {
 
@@ -223,89 +204,8 @@ function menuResponsivo() {
 }
 
 
-/* ==========================================
-   5. TEMA ESCURO
-========================================== */
 
-function iniciarTemaEscuro() {
-
-    let cabecalho = document.querySelector("header");
-
-    if (!cabecalho) {
-        return;
-    }
-
-    let botaoTema = document.createElement("button");
-
-    botaoTema.innerText = "Tema escuro";
-
-    botaoTema.type = "button";
-
-    botaoTema.id = "botaoTema";
-
-    botaoTema.style.padding = "6px 10px";
-
-    botaoTema.style.borderRadius = "8px";
-
-    botaoTema.style.cursor = "pointer";
-
-    cabecalho.appendChild(botaoTema);
-
-
-    // Estilos do tema escuro.
-
-    let estilo = document.createElement("style");
-
-    estilo.textContent = `
-
-        body.tema-escuro {
-            background-color: #132442;
-            color: white;
-        }
-
-        body.tema-escuro main p,
-        body.tema-escuro main li,
-        body.tema-escuro main h2,
-        body.tema-escuro main h3 {
-            color: white !important;
-        }
-
-        body.tema-escuro .card,
-        body.tema-escuro .card-inicio {
-            background-color: #233957;
-        }
-
-        body.tema-escuro footer {
-            color: white;
-        }
-
-    `;
-
-    document.head.appendChild(estilo);
-
-
-    botaoTema.addEventListener("click", function() {
-
-        document.body.classList.toggle("tema-escuro");
-
-        if (document.body.classList.contains("tema-escuro")) {
-
-            botaoTema.innerText = "Tema claro";
-
-        } else {
-
-            botaoTema.innerText = "Tema escuro";
-
-        }
-
-    });
-
-}
-
-
-/* ==========================================
-   6. QUIZ DE GEOGRAFIA
-========================================== */
+/* QUIZ DE GEOGRAFIA */
 
 function iniciarQuiz() {
 
@@ -526,9 +426,7 @@ function iniciarQuiz() {
 }
 
 
-/* ==========================================
-   7. INICIALIZAÇÃO
-========================================== */
+/* INICIALIZAÇÃO */
 
 document.addEventListener("DOMContentLoaded", function() {
 
