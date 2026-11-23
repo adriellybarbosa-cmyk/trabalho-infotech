@@ -214,16 +214,16 @@ function mostrarResultado(quiz) {
   reiniciar.textContent = "Refazer atividade";
 
   reiniciar.addEventListener("click", () => {
-    perguntaAtual = 0;
-    pontos = 0;
-    resultado.remove();
-    mostrarPergunta(quiz);
-  });
+  perguntaAtual = 0;
+  pontos = 0;
+  resultado.remove();
+  mostrarPergunta(quiz);
+});
 
-  resultado.append(titulo, pontuacao, reiniciar);
-  quiz.appendChild(resultado);
+resultado.append(titulo, pontuacao, reiniciar);
+quiz.appendChild(resultado);
 }
 
-iniciarAtividade();
+iniciarQuiz();
 
-  });
+});
