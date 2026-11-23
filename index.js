@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 let pontos = 0;
 
 function iniciarQuiz() {
-  const principal = document.querySelector("main");
+  const principal = document.querySelector("#quiz-sustentabilidade-container");
   if (!principal) return;
 
   const quiz = document.createElement("section");
